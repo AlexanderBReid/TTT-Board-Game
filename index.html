@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>TTT Board Game (Alpha)</title>
+</head>
+
+<style>
+
+body {background-image: linear-gradient(to right, rgba(0,0,255,0.5), rgba(0,0,255,0.2), 	rgba(0,255,0,0.2), rgba(0,255,0,.5), rgba(255,0,0,.2), rgba(255,0,0,.5))}
+
+.zoom img:active {
+	transform:scale(2); 
+	position: fixed; top: 20%; left:30%;
+	}
+
+
+.map td {
+	text-align: center;
+	width: 190px;
+	height: 190px;
+}
+.map tr {
+	text-align: center;
+	width: 190px;
+	height: 190px;
+.map table {
+	
+	border-spacing: 0;
+	max-width: 10000px;
+	min-width: 10000px;
+	border: 0;
+<!--
+.sidequest table {
+	border: 1;
+	td {
+	width: 100px;
+	height: 100px;}
+	tr {
+	width: 100px;
+	height: 100px;}
+-->
+
+</style>
+<!-- -------------------------------------- -->
+
+<body>
+
+					
+
+<h1>
+(Possibly) Interactive Webpage for the Premier Test Run of the TTT Board Game!
+</h1>
+
+<h2>First, choose a character sheet! </h2>
+<p>(Click and hold to zoom)</p>
+
+<div class = "zoom">
+<table border = "0">
+<tr><td><img src="./Images/CS_CM.png" height = "200" width = "300"/></td>
+<td><img src="./Images/CS_MB.png" height = "200" width = "300"/></td>
+<td><img src="./Images/CS_CT.png" height = "200" width = "300"/></td></tr>
+</table>
+</div>
+
+<!-- -------------------------------------- -->
+
+<h2>Character Role Card</h2>
+<p>At the start of each round, each player would draw a role card. <br>
+The roles are:
+<ul>
+<li>Innocent: Your job is to solve the puzzle!</li>
+<li>Traitor: Your job is to either confirm all the innocents have died or destroy 5 puzzle pieces.</li>
+<li>(Optional) Jester Role: Your job is to get your self killed, but you can't do damage.<br>
+If you are killed, swap role cards with your killer.
+<li>(Optional) Brown Role:</li>
+<li>(Optional) Detective Role: You are an innocent. When you succeed on an investigation check of a body, you can reveal the role card to everyone.</li>
+</ul>
+</p>
+
+<h2>Next, choose a Side Quest card</h2>
+<p>Choose at random, click to turn over. <br>
+Only click one card, as you will need to reload the page to reset.</p>
+
+
+<div class = "sidequest">
+<table>
+<tr><td><img id = "back" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select1()"/></td>
+
+<td><img id = "back2" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select2()"/>
+</td>
+<td><img id = "back3" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select3()"/>
+</td>
+<td><img id = "back4" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select4()"/>
+</td>
+</tr>
+<tr>
+<td><img id = "back5" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select5()"/>
+</td>
+<td><img id = "back6" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select6()"/>
+</td>
+<td><img id = "back7" src = "./Images/sqback.png" height = "100" width = "150" onclick= "select7()"/>
+</td>
+</tr>
+</table>
+</div>
+
+<p style= "height: 150px;">
+<img id = "image" src =""/>
+<img id = "image2" src =""/>
+<img id = "image3" src =""/>
+<img id = "image4" src =""/>
+<img id = "image5" src =""/>
+<img id = "image6" src =""/>
+<img id = "image7" src =""/>
+</p>
+
+
+
+<br><br>
+
+<!-- -------------------------------------- -->
+
+<h2>We're ready to go! Here's the map</h2>
+<p>As we unlock game tiles, click to expand a space (add a tile to the map)
+
+</p>
+				
+
+					
+
+<div class = "map">
+<table>
+<tr>
+<td><img src = "./Images/MT1.png" height = "20" width = "20" id = "id1"  onclick="scale1()"/></td>
+<td><img src = "./Images/MT2.png" height = "20" width = "20" id = "id2" onclick="scale2()"></td>
+<td><img src = "./Images/MT3.png" height = "20" width = "20" id = "id3" onclick="scale3()"></td>
+<td><img src = "./Images/MT4.png" height = "20" width = "20"  id = "id4" onclick="scale4()"></td>
+</tr>
+<tr>
+<td><img src = "./Images/MT5.png" height = "20" width = "20" id = "id5" onclick="scale5()"></td>
+<td colspan = "2"><img src = "./Images/MBallroom.png" height = "200" width = "400"></td>
+<td><img src = "./Images/MT6.png" height = "20" width = "20" id = "id10" onclick="scale10()"></td>
+</tr>
+<tr>
+<td><img src = "./Images/MT7.png" height = "20" width = "20" id = "id6" onclick= "scale6()"></td>
+<td><img src = "./Images/MT8.png" height = "20" width = "20" id = "id7" onclick= "scale7()"></td>
+<td><img src = "./Images/MT9.png" height = "20" width = "20" id = "id8" onclick= "scale8()"></td>
+<td><img src = "./Images/MT10.png" height = "20" width = "20" id = "id9" onclick= "scale9()"></td>
+</tr>
+<tr><td><img src = "./Images/MPR.png" height = "20" width = "20" id = "id11" onclick= "scale11()"></td>
+</tr>
+</table>
+</div>
+
+
+<!-- ------------------------------ -->
+
+<h2>Wands!</h2>
+<p>When travelling around the map you might find a wand. <br>
+There are two types of wands: Attack Wands and Utility Wands.<br>
+When you find a wand, click on a wand card. One will appear in your 'inventory' space above. <br>
+Click on that image to display the spell. (spell card may appear far to the right, just scroll over)</p>
+
+<p style= "height: 150px;">
+<img id = "wand1" src ="" onclick= "uuselect1()"/>
+<img id = "wand2" src ="" onclick= "uuselect2()"/>
+<img id = "wand3" src ="" onclick= "uuselect3()"/>
+<img id = "wand4" src ="" onclick= "uuselect4()"/>
+<img id = "wand5" src ="" onclick= "uuselect5()"/>
+<img id = "wand6" src ="" onclick= "uuselect6()"/>
+<img id = "wand7" src ="" onclick= "uuselect7()"/>
+<img id = "wand8" src ="" onclick= "uuselect8()"/>
+<img id = "wand9" src ="" onclick= "uuselect9()"/>
+<img id = "wand10" src ="" onclick= "uuselect10()"/>
+<img id = "wand11" src ="" onclick= "uuselect11()"/>
+<img id = "wand12" src ="" onclick= "uuselect12()"/>
+<img id = "wand13" src ="" onclick= "uuselect13()"/>
+
+
+<img id = "uwand1" src =""/>
+<img id = "uwand2" src =""/>
+<img id = "uwand3" src =""/>
+<img id = "uwand4" src =""/>
+<img id = "uwand5" src =""/>
+<img id = "uwand6" src =""/>
+<img id = "uwand7" src =""/>
+<img id = "uwand8" src =""/>
+<img id = "uwand9" src =""/>
+<img id = "uwand10" src =""/>
+<img id = "uwand11" src =""/>
+<img id = "uwand12" src =""/>
+<img id = "uwand13" src =""/>
+</p>
+
+<br><br><br><br><br><br><br><br><br><br>
+
+<table>
+<tr><td><img id = "uback1" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect1()"/>
+</td>
+<td><img id = "uback2" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect2()"/>
+</td>
+<td><img id = "uback3" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect3()"/>
+</td>
+<td><img id = "uback4" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect4()"/>
+</td>
+<td><img id = "uback5" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect5()"/>
+</td>
+<td><img id = "uback6" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect6()"/>
+</td>
+</tr>
+<tr>
+<td><img id = "uback7" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect7()"/>
+</td>
+<td><img id = "uback8" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect8()"/>
+</td>
+<td><img id = "uback9" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect9()"/>
+</td>
+<td><img id = "uback10" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect10()"/>
+</td>
+<td><img id = "uback11" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect11()"/>
+</td>
+<td><img id = "uback12" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect12()"/>
+</td>
+</tr>
+<tr>
+<td><img id = "uback13" src = "./Images/uwback.png" height = "100" width = "150" onclick= "uselect13()"/>
+</td>
+</tr>
+</table>
+
+
+<p>
+<img id = "awand1" src ="" onclick= "aaselect1()"/>
+
+<img id = "aawand1" src =""/>
+</p>
+
+
+<img id = "aback1" src = "./Images/awback.png" height = "100" width = "150" onclick= "aselect1()"/>
+
+
+<h2>Solving the puzzle</h2>
+<p>As you travel around the map you will collect puzzle pieces. Once you have revealed the Puzzle Room, you can try to solve the puzzle. <br>
+You need five puzzle pieces to be placed in the Puzzle Room to attempt to solve the puzzle. <br>
+Hopefully I will design a cool little puzzle thing with a variety of options and solutions.<br>
+Or it will just be a win condition.<br>
+The traitors can do something similar. They can win by destroying five puzzle pieces. <br>
+As with the innocents, the puzzle pieces must first be placed in the puzzle room.
+</p>
+
+<h2>Who won?</h2>
+<p>After some number of rounds, the player with the highest individual score wins. <br>
+
+
+<h2>Rules of the Game</h2>
+<p>At some points I will put the rules here...</p>
+
+</p>
+
+<!-- ------------------------------------ -->
+<!--
+<a href ="#" onclick = "select1()" id = "sq1></a>
+
+
+<img id = "image" src =""/>
+
+<button type = "button" onclick= "select1()"> show card </button>
+-->
+
+<!-- -------------------------------------- -->
+
+<script>
+function scale1()
+{
+	var div1 = document.getElementById("id1");
+	
+	div1.style.transform = 'scale(10)';
+	
+}
+
+function scale2()
+{
+	var div1 = document.getElementById("id2");
+	
+	div1.style.transform = 'scale(10)';
+
+}
+function scale3()
+{
+	var div1 = document.getElementById("id3");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale4()
+{
+	var div1 = document.getElementById("id4");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale5()
+{
+	var div1 = document.getElementById("id5");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale6()
+{
+	var div1 = document.getElementById("id6");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale7()
+{
+	var div1 = document.getElementById("id7");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale8()
+{
+	var div1 = document.getElementById("id8");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale9()
+{
+	var div1 = document.getElementById("id9");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale10()
+{
+	var div1 = document.getElementById("id10");
+	
+	div1.style.transform = 'scale(10)';
+}
+function scale11()
+{
+	var div1 = document.getElementById("id11");
+	
+	div1.style.transform = 'scale(10)';
+}
+
+function select1()
+{
+	let image = document.getElementById("image");
+	image.src = "./Images/sq1.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '900px';
+
+	document.getElementById("back")
+	.style.opacity = '0.5';
+
+}
+function select2()
+{
+	let image = document.getElementById("image2");
+	image.src = "./Images/sq2.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '0px';
+	image.style.top = '900px';
+
+	document.getElementById("back2")
+	.style.opacity = '0.5';
+
+}
+function select3()
+{
+	let image = document.getElementById("image3");
+	image.src = "./Images/sq3.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '225px';
+	image.style.top = '900px';
+
+	document.getElementById("back3")
+	.style.opacity = '0.5';
+
+}
+function select4()
+{
+	let image = document.getElementById("image4");
+	image.src = "./Images/sq4.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '450px';
+	image.style.top = '900px';
+
+	document.getElementById("back4")
+	.style.opacity = '0.5';
+
+}
+function select5()
+{
+	let image = document.getElementById("image5");
+	image.src = "./Images/sq5.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '-225px';
+	image.style.top = '900px';
+
+	document.getElementById("back5")
+	.style.opacity = '0.5';
+
+}
+function select6()
+{
+	let image = document.getElementById("image6");
+	image.src = "./Images/sq6.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '0px';
+	image.style.top = '900px';
+
+	document.getElementById("back6")
+	.style.opacity = '0.5';
+
+}
+function select7()
+{
+	let image = document.getElementById("image7");
+	image.src = "./Images/sq7.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+	image.style.left = '225px';
+	image.style.top = '900px';
+
+	document.getElementById("back7")
+	.style.opacity = '0.5';
+
+}
+
+<!-- -------------------------- -->
+
+function uselect1()
+{
+	let image = document.getElementById("wand1");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback1")
+	.style.opacity = '0.5';
+
+}
+function uuselect1()
+{
+	let image = document.getElementById("uwand1");
+	image.src = "./Images/uw1.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand1")
+	.style.display = "none";
+
+}
+
+
+function uselect2()
+{
+	let image = document.getElementById("wand2");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '0px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback2")
+	.style.opacity = '0.5';
+
+}
+function uuselect2()
+{
+	let image = document.getElementById("uwand2");
+	image.src = "./Images/uw2.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '0px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand2")
+	.style.display = "none";
+
+}
+
+
+function uselect3()
+{
+	let image = document.getElementById("wand3");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '225px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback3")
+	.style.opacity = '0.5';
+
+}
+function uuselect3()
+{
+	let image = document.getElementById("uwand3");
+	image.src = "./Images/uw3.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '225px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand3")
+	.style.display = "none";
+
+}
+
+
+function uselect4()
+{
+	let image = document.getElementById("wand4");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '450px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback4")
+	.style.opacity = '0.5';
+
+}
+function uuselect4()
+{
+	let image = document.getElementById("uwand4");
+	image.src = "./Images/uw4.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '450px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand4")
+	.style.display = "none";
+
+}
+
+
+function uselect5()
+{
+	let image = document.getElementById("wand5");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '675px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback5")
+	.style.opacity = '0.5';
+
+}
+function uuselect5()
+{
+	let image = document.getElementById("uwand5");
+	image.src = "./Images/uw5.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '675px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand5")
+	.style.display = "none";
+
+}
+
+
+function uselect6()
+{
+	let image = document.getElementById("wand6");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '900px';
+	image.style.top = '2100px';
+
+	document.getElementById("uback6")
+	.style.opacity = '0.5';
+
+}
+function uuselect6()
+{
+	let image = document.getElementById("uwand6");
+	image.src = "./Images/uw6.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '900px';
+	image.style.top = '2100px';
+
+	document.getElementById("wand6")
+	.style.display = "none";
+
+}
+
+
+function uselect7()
+{
+	let image = document.getElementById("wand7");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback7")
+	.style.opacity = '0.5';
+
+}
+function uuselect7()
+{
+	let image = document.getElementById("uwand7");
+	image.src = "./Images/uw7.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand7")
+	.style.display = "none";
+
+}
+
+
+function uselect8()
+{
+	let image = document.getElementById("wand8");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '0px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback8")
+	.style.opacity = '0.5';
+
+}
+function uuselect8()
+{
+	let image = document.getElementById("uwand8");
+	image.src = "./Images/uw8.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '0px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand8")
+	.style.display = "none";
+
+}
+
+
+function uselect9()
+{
+	let image = document.getElementById("wand9");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '225px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback9")
+	.style.opacity = '0.5';
+
+}
+function uuselect9()
+{
+	let image = document.getElementById("uwand9");
+	image.src = "./Images/uw9.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '225px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand9")
+	.style.display = "none";
+
+}
+
+
+function uselect10()
+{
+	let image = document.getElementById("wand10");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '450px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback10")
+	.style.opacity = '0.5';
+
+}
+function uuselect10()
+{
+	let image = document.getElementById("uwand10");
+	image.src = "./Images/uw10.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '450px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand10")
+	.style.display = "none";
+
+}
+
+
+function uselect11()
+{
+	let image = document.getElementById("wand11");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '675px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback11")
+	.style.opacity = '0.5';
+
+}
+function uuselect11()
+{
+	let image = document.getElementById("uwand11");
+	image.src = "./Images/uw11.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '675px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand11")
+	.style.display = "none";
+
+}
+
+
+function uselect12()
+{
+	let image = document.getElementById("wand12");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '900px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback12")
+	.style.opacity = '0.5';
+
+}
+function uuselect12()
+{
+	let image = document.getElementById("uwand12");
+	image.src = "./Images/uw12.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '900px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand12")
+	.style.display = "none";
+
+}
+
+
+function uselect13()
+{
+	let image = document.getElementById("wand13");
+	image.src = "./Images/uwback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2250px';
+
+	document.getElementById("uback13")
+	.style.opacity = '0.5';
+
+}
+function uuselect13()
+{
+	let image = document.getElementById("uwand13");
+	image.src = "./Images/uw13.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '-225px';
+	image.style.top = '2250px';
+
+	document.getElementById("wand13")
+	.style.display = "none";
+
+}
+
+
+
+function aselect1()
+{
+	let image = document.getElementById("awand1");
+	image.src = "./Images/awback.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '75px';
+	image.style.top = '2750px';
+
+	document.getElementById("aback1")
+	.style.opacity = '0.5';
+
+}
+function aaselect1()
+{
+	let image = document.getElementById("aawand1");
+	image.src = "./Images/aw1.png";
+	image.style.transform = 'scale(0.3)';
+	image.style.position = 'absolute';
+
+	image.style.left = '75px';
+	image.style.top = '2750px';
+
+	document.getElementById("awand1")
+	.style.display = "none";
+
+}
+
+
+
+
+</script>
+
+</body></html>
